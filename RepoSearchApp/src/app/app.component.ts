@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'RepoSearchApp';
+  isSearchActive: boolean = true;
+
+  handleInputTab(whichTab: string) {
+    whichTab == 'search' ? this.isSearchActive = true : this.isSearchActive = false;
+  }
 }
