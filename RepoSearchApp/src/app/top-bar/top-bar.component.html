@@ -1,29 +1,29 @@
 <div class="top-bar">
-
-    <div class="top-bar-left-content">
-      <h1>
-        Repo Search App
-      </h1>
-      <div class="top-bar-buttons">
-        <div class="top-bar-button" (click)="handleButtonClick('search')"
-             [ngClass]="{'top-bar-button-active' : searchTabActive}">
-          Search
-        </div>
-        <div class="top-bar-button" (click)="handleButtonClick('history')"
-             [ngClass]="{'top-bar-button-active' : !searchTabActive}">
-          History
-        </div>
+  <div class="top-bar-left-content">
+    <h1>Repo Search App</h1>
+    <div class="top-bar-buttons">
+      <div
+        class="top-bar-button"
+        (click)="handleButtonClick('search')"
+        [ngClass]="{ 'top-bar-button-active': searchTabActive }"
+      >
+        Search
+      </div>
+      <div
+        class="top-bar-button"
+        (click)="handleButtonClick('history')"
+        [ngClass]="{ 'top-bar-button-active': !searchTabActive }"
+      >
+        History
       </div>
     </div>
-  
-    <div class="menu-dropdown">
-      MENU
-      <div class="menu-content">
-        <div class="menu-content-item">PAGE1</div>
-        <div class="menu-content-item">PAGE2</div>
-        <div class="menu-content-item">MOBILE</div>
-      </div>
-    </div>
-  
   </div>
-  
+
+  <div class="menu-dropdown">
+    <button class="dropdown-btn">Menu</button>
+    <div class="menu-content">
+      <div class="menu-content-item">PAGE1</div>
+      <div class="menu-content-item">PAGE2</div>
+    </div>
+  </div>
+</div>

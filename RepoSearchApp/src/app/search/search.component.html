@@ -1,4 +1,46 @@
 <div class="content">
-    search works!
+  <form class="search" [formGroup]="searchForm" (submit)="searchRepo()">
+    <label>Search by:*</label>
+
+    <div class="search-block">
+      <input
+        type="search"
+        formControlName="searchInput"
+        [ngClass]="{ 'is-invalid': submitted && f.searchInput.errors }"
+      />
+      <div *ngIf="submitted && f.searchInput.errors" class="invalid-feedback">
+        <div *ngIf="f.searchInput.errors?.['required']">
+          Search field is required
+        </div>
+        <div *ngIf="f.searchInput.errors?.['minlength']">
+          Search field must be at least 3 characters
+        </div>
+      </div>
+    </div>
+
+    <div class="checkbox-block">
+      <div>
+        <label>In:</label>
+        <input type="checkbox" formControlName="nameCheckbox" name="nameCheckbox" (input)="validateCheckboxes()"/>
+        <label>name</label>
+
+        <input type="checkbox" formControlName="descriptionCheckbox" name="descriptionCheckbox" (input)="validateCheckboxes()"/>
+        <label>description</label>
+
+        <input type="checkbox" formControlName="readmeCheckbox" name="readmeCheckbox" (input)="validateCheckboxes()"/>
+        <label>readme</label>
+      </div>
+
+      <div class="checkbox-error" *ngIf="!validCheckboxState">
+        At least one checkbox is required!
+      </div>
+    </div>
+
+    <button type="submit" name="searchButton">Search</button>
+    <button type="reset" name="resetButton">Reset</button>
+  </form>
+
+  <div class="searchResult">
+    <pre>{{ Results | json }}</pre>
   </div>
-  
+</div>
