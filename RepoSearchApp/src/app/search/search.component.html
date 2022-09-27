@@ -1,5 +1,5 @@
 <div class="content">
-  <form class="search" [formGroup]="searchForm" (submit)="searchRepo()">
+  <form class="search" [formGroup]="searchForm" (submit)="searchRepo()" (reset)="reset()">
     <label>Search by:*</label>
 
     <div class="search-block">
@@ -31,16 +31,19 @@
         <label>readme</label>
       </div>
 
-      <div class="checkbox-error" *ngIf="!validCheckboxState">
+      <div class="checkbox-error" *ngIf="invalidCheckboxState">
         At least one checkbox is required!
       </div>
     </div>
 
-    <button type="submit" name="searchButton">Search</button>
-    <button type="reset" name="resetButton">Reset</button>
+    <button type="submit" class="button search-btn" name="searchButton">Search</button>
+    <button type="reset" class="button reset-btn" name="resetButton">Reset</button>
   </form>
 
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
   <div class="searchResult">
-    <pre>{{ Results | json }}</pre>
+    <pre>{{Results|json}}</pre>
   </div>
+
 </div>

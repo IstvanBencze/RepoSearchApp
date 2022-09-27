@@ -8,21 +8,22 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-  public Results: any;
+  public Results: any[] | undefined;
 
-  validCheckboxState: boolean = true;
+  invalidCheckboxState: boolean = false;
 
   searchForm = new FormGroup({
-    searchInput: new FormControl('', [
+    searchInput: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(3),
     ]),
-    nameCheckbox: new FormControl(true),
-    descriptionCheckbox: new FormControl(false),
-    readmeCheckbox: new FormControl(false),
+    nameCheckbox: new FormControl<boolean>(false,{nonNullable:true}),
+    descriptionCheckbox: new FormControl<boolean>(false,{nonNullable:true}),
+    readmeCheckbox: new FormControl<boolean>(false,{nonNullable:true}),
   });
 
   submitted = false;
+  isLoading = false;
 
   constructor(private repoService: RepoService) {}
 
@@ -41,16 +42,11 @@ export class SearchComponent implements OnInit {
   }
 
   validateCheckboxes() {
-    setTimeout(() => {
-      if (
-        this.searchForm.controls['nameCheckbox'].value == false &&
-        this.searchForm.controls['descriptionCheckbox'].value == false &&
-        this.searchForm.controls['readmeCheckbox'].value == false
-      ) {
-        this.validCheckboxState = false;
-      }
-    }, 0);
-    this.validCheckboxState = true;
+    return(
+      this.searchForm.controls['nameCheckbox'].value == false &&
+      this.searchForm.controls['descriptionCheckbox'].value == false &&
+      this.searchForm.controls['readmeCheckbox'].value == false
+    );
   }
 
   public searchRepo() {
@@ -60,15 +56,23 @@ export class SearchComponent implements OnInit {
     if (this.searchForm.invalid) {
       return;
     }
-    if (!this.validCheckboxState) {
+
+    this.invalidCheckboxState = this.validateCheckboxes();
+    if (this.invalidCheckboxState) {
       return;
     }
 
+    this.isLoading = true;
     this.repoService.getRepo(searchInput, this.checkboxValues()).subscribe({
       next: (data) => {
-        this.Results = data;
+        this.Results = data.items;
+        this.isLoading = false;
       },
     });
+  }
+
+  public reset() {
+    this.Results = undefined;
   }
 
   ngOnInit(): void {}

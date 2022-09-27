@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class RepoService {
   constructor(private http: HttpClient) {}
 
-  public getRepo(searchBy: any,searchIn:string): Observable<any> {
+  public getRepo(searchBy: string|null,searchIn:string): Observable<any> {
     return this.http.get<any>(
       `${environment.apiUrl}/search/repositories?q=${searchBy}+in:${searchIn}`
     );
