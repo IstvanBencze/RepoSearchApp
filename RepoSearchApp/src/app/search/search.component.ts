@@ -9,6 +9,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class SearchComponent implements OnInit {
   public Results: any[] | undefined;
+  public TotalResults: any;
+  public sortBy = 'default';
+  public orderBy = 'desc';
 
   invalidCheckboxState: boolean = false;
 
@@ -17,9 +20,9 @@ export class SearchComponent implements OnInit {
       Validators.required,
       Validators.minLength(3),
     ]),
-    nameCheckbox: new FormControl<boolean>(false,{nonNullable:true}),
-    descriptionCheckbox: new FormControl<boolean>(false,{nonNullable:true}),
-    readmeCheckbox: new FormControl<boolean>(false,{nonNullable:true}),
+    nameCheckbox: new FormControl<boolean>(false, { nonNullable: true }),
+    descriptionCheckbox: new FormControl<boolean>(false, { nonNullable: true }),
+    readmeCheckbox: new FormControl<boolean>(false, { nonNullable: true }),
   });
 
   submitted = false;
@@ -42,7 +45,7 @@ export class SearchComponent implements OnInit {
   }
 
   validateCheckboxes() {
-    return(
+    return (
       this.searchForm.controls['nameCheckbox'].value == false &&
       this.searchForm.controls['descriptionCheckbox'].value == false &&
       this.searchForm.controls['readmeCheckbox'].value == false
@@ -63,16 +66,26 @@ export class SearchComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.repoService.getRepo(searchInput, this.checkboxValues()).subscribe({
-      next: (data) => {
-        this.Results = data.items;
-        this.isLoading = false;
-      },
-    });
+    this.repoService
+      .getRepo(
+        searchInput,
+        this.checkboxValues(),
+        this.sortBy,
+        this.orderBy
+      )
+      .subscribe({
+        next: (data) => {
+          this.Results = data.items;
+          this.TotalResults = data.total_count;
+          this.isLoading = false;
+        },
+      });
   }
 
   public reset() {
     this.Results = undefined;
+    this.sortBy = 'default';
+    this.orderBy = 'desc';
   }
 
   ngOnInit(): void {}

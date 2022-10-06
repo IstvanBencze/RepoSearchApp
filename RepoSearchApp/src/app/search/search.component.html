@@ -42,8 +42,68 @@
 
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 
-  <div class="searchResult">
-    <pre>{{Results|json}}</pre>
-  </div>
+  <div class="searchResult" *ngIf="Results">
+    <div class="table-header">
+      <div>
+        <mat-radio-group
+          color="primary"
+          aria-label="Sort by"
+          [(ngModel)]="sortBy"
+          (change)="searchRepo()"
+        >
+          <label>Sort by: </label>
+          <mat-radio-button value="default">Default</mat-radio-button>
+          <mat-radio-button value="stars">Stars</mat-radio-button>
+          <mat-radio-button value="forks">Forks</mat-radio-button>
+        </mat-radio-group>
+        <mat-radio-group
+          color="primary"
+          aria-label="Order by"
+          [(ngModel)]="orderBy"
+          (change)="searchRepo()"
+        >
+          <label>Order by: </label>
+          <mat-radio-button value="desc">desc</mat-radio-button>
+          <mat-radio-button value="asc">asc</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div>Total results: {{ TotalResults }}</div>
+    </div>
 
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Full Name</th>
+          <th></th>
+          <th></th>
+          <th>Description</th>
+          <th>Language</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let repoDetail of Results">
+          <td>{{ repoDetail.name }}</td>
+          <td>{{ repoDetail.full_name }}</td>
+          <td style="white-space: nowrap">
+            Stars: {{ repoDetail.stargazers_count }} <br />
+            Watchers: {{ repoDetail.watchers_count }}
+          </td>
+          <td style="white-space: nowrap">
+            Forks: {{ repoDetail.forks_count }} <br />
+            Issues: {{ repoDetail.open_issues_count }}
+          </td>
+          <td>{{ repoDetail.description }}</td>
+          <td>{{ repoDetail.language }}</td>
+          <td>
+            Created at: {{ repoDetail.created_at | date: "YYYY-MM-dd" }} <br />
+            Updated at: {{ repoDetail.updated_at | date: "YYYY-MM-dd" }}
+          </td>
+          <td>By: {{ repoDetail.owner.login }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
