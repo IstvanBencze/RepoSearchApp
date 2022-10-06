@@ -113,3 +113,32 @@
   border-bottom: 1px solid rgba(128, 128, 128, 0.726);
   padding: 2px 8px;
 }
+
+.iconImg{
+  width: 50px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.mat-paginator{
+  background-color: lightgrey;
+}
+
+.error-message{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: #ffe7e6;
+  border: solid red;
+  border-radius: 6px;
+  border-width: 0 0 0 6px;
+  color: red;
+  padding: 15px;
+}
+
+.close-button{
+  border-radius: 50%;
+  background-color: red;
+  border: none;
+  cursor: pointer;
+}

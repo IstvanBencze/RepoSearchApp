@@ -14,9 +14,11 @@ export class RepoService {
     searchIn: string,
     sortBy: string,
     orderBy: string,
+    pageSize: number,
+    pageIndex: number
   ): Observable<any> {
     return this.http.get<any>(
-      `${environment.apiUrl}/search/repositories?q=${searchBy}+in:${searchIn}&sort=${sortBy}&order=${orderBy}`
+      `${environment.apiUrl}/search/repositories?q=${searchBy}+in:${searchIn}&sort=${sortBy}&order=${orderBy}&page=${pageIndex + 1}&per_page=${pageSize}`
     );
   }
 }

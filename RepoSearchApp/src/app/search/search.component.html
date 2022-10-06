@@ -1,3 +1,8 @@
+<div class="error-message" *ngIf="ErrorMessage">
+  Error: {{ErrorMessage}}
+  <button class="close-button" (click)="ErrorMessage=''">X</button>
+</div>
+
 <div class="content">
   <form class="search" [formGroup]="searchForm" (submit)="searchRepo()" (reset)="reset()">
     <label>Search by:*</label>
@@ -45,29 +50,19 @@
   <div class="searchResult" *ngIf="Results">
     <div class="table-header">
       <div>
-        <mat-radio-group
-          color="primary"
-          aria-label="Sort by"
-          [(ngModel)]="sortBy"
-          (change)="searchRepo()"
-        >
+        <mat-radio-group color="primary" aria-label="Sort by" [(ngModel)]="sortBy" (change)="searchRepo()">
           <label>Sort by: </label>
           <mat-radio-button value="default">Default</mat-radio-button>
           <mat-radio-button value="stars">Stars</mat-radio-button>
           <mat-radio-button value="forks">Forks</mat-radio-button>
         </mat-radio-group>
-        <mat-radio-group
-          color="primary"
-          aria-label="Order by"
-          [(ngModel)]="orderBy"
-          (change)="searchRepo()"
-        >
+        <mat-radio-group color="primary" aria-label="Order by" [(ngModel)]="orderBy" (change)="searchRepo()">
           <label>Order by: </label>
           <mat-radio-button value="desc">desc</mat-radio-button>
           <mat-radio-button value="asc">asc</mat-radio-button>
         </mat-radio-group>
       </div>
-      <div>Total results: {{ TotalResults }}</div>
+      <div>Total results: {{TotalResults}}</div>
     </div>
 
     <table class="table">
@@ -86,7 +81,7 @@
       <tbody>
         <tr *ngFor="let repoDetail of Results">
           <td>{{ repoDetail.name }}</td>
-          <td>{{ repoDetail.full_name }}</td>
+          <td><a href="{{ repoDetail.html_url }}" target="_blank">{{repoDetail.full_name}}</a></td>
           <td style="white-space: nowrap">
             Stars: {{ repoDetail.stargazers_count }} <br />
             Watchers: {{ repoDetail.watchers_count }}
@@ -98,12 +93,18 @@
           <td>{{ repoDetail.description }}</td>
           <td>{{ repoDetail.language }}</td>
           <td>
-            Created at: {{ repoDetail.created_at | date: "YYYY-MM-dd" }} <br />
-            Updated at: {{ repoDetail.updated_at | date: "YYYY-MM-dd" }}
+            Created at: {{ repoDetail.created_at | date:'YYYY-MM-dd'}} <br />
+            Updated at: {{ repoDetail.updated_at | date:'YYYY-MM-dd'}}
           </td>
-          <td>By: {{ repoDetail.owner.login }}</td>
+          <td>By: {{ repoDetail.owner.login }} <a href="{{repoDetail.owner.html_url}}" target="_blank"> <img class="iconImg" src="{{repoDetail.owner.avatar_url}}" alt="owner icon"></a> </td>
         </tr>
       </tbody>
     </table>
+    <mat-paginator [length]="TotalResults"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            (page)="pageChange($event)"
+            aria-label="Select page">
+    </mat-paginator>
   </div>
 </div>

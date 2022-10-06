@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RepoService } from '../services/repo.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-search',
@@ -12,6 +13,9 @@ export class SearchComponent implements OnInit {
   public TotalResults: any;
   public sortBy = 'default';
   public orderBy = 'desc';
+  public pageSize = 10;
+  public pageIndex = 0;
+  public ErrorMessage: any;
 
   invalidCheckboxState: boolean = false;
 
@@ -71,12 +75,18 @@ export class SearchComponent implements OnInit {
         searchInput,
         this.checkboxValues(),
         this.sortBy,
-        this.orderBy
+        this.orderBy,
+        this.pageSize,
+        this.pageIndex
       )
       .subscribe({
         next: (data) => {
           this.Results = data.items;
           this.TotalResults = data.total_count;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.ErrorMessage = `${err.error.message}`;
           this.isLoading = false;
         },
       });
@@ -86,6 +96,12 @@ export class SearchComponent implements OnInit {
     this.Results = undefined;
     this.sortBy = 'default';
     this.orderBy = 'desc';
+    this.pageIndex = 0;
+  }
+
+  public pageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.searchRepo();
   }
 
   ngOnInit(): void {}
