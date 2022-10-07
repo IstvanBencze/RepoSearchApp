@@ -1,3 +1,7 @@
+# Description
+
+This is an application that can be used to search GitHub repositories through it's open API.
+
 # RepoSearchApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
